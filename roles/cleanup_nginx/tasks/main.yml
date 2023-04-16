@@ -1,0 +1,55 @@
+---
+- name: include task specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+        - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+        - '{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - 'default.yml'
+      paths: '../vars'
+
+- block:
+  - name: exist nginx service?
+    shell: systemctl -a | grep {{ nginx_init_name }}
+    register: systemd_result
+    changed_when: false
+    ignore_errors: true
+
+  - name: stop and disable nginx
+    systemd:
+      name: "{{ nginx_init_name }}"
+      enabled: no
+      state: stopped
+    when: systemd_result | succeeded
+
+  - name: Delete nginx.conf
+    file:
+      path: /etc/nginx/nginx.conf
+      state: absent
+
+  - name: Delete nginx-ketchup conf
+    file:
+      path: '{{ nginx_conf_dir }}/ketchup.conf'
+      state: absent
+
+  - name: Unistall nginx packages
+    yum:
+      name: '{{ item }}'
+      state: absent
+    with_items: '{{ yum_nginx_packages }}'
+
+  - name: Disable epel repository
+    ini_file:
+      dest: /etc/yum.repos.d/epel-7.repo
+      section: epel
+      option: enabled
+      value: 0
+
+  - name: Delete epel repo file
+    file:
+      path: /etc/yum.repos.d/epel-7.repo
+      state: absent
+
+  become: True

@@ -1,0 +1,31 @@
+---
+- name: Install Ketchup with Nginx
+  hosts: "ketchup"
+  gather_facts: True
+
+  tags:
+    - ketchup
+
+  roles:
+    - role: repos_el
+
+    - role: packages_el
+      packages_el_nginx_packages: False
+
+    - role: ketchup
+
+
+- name: Install Nginx frontend for Ketchup
+  hosts: "ketchup_nginx"
+  gather_facts: True
+
+  tags:
+    - ketchup_nginx
+
+  roles:
+    - role: repos_el
+
+    - role: packages_el
+      packages_el_nginx_packages: True
+
+    - role: nginx

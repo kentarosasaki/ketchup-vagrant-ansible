@@ -1,0 +1,8 @@
+---
+- name: restart ketchup
+  systemd:
+    name: "{{ ketchup_init_name }}"
+    enabled: yes
+    state: restarted
+  when: artifact|default("playbook") != "containered"
+  become: True

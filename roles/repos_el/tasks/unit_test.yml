@@ -1,0 +1,33 @@
+---
+- name: include task specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+        - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+        - '{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - 'default.yml'
+      paths: '../vars'
+
+- block:
+  - name: Check status for repo files
+    wait_for:
+      path: '/etc/yum.repos.d/{{ item }}'
+      timeout: 5
+    with_items: '{{ yum_online_repo_files }}'
+
+  - name: Gathaering registered repos
+    command: yum repolist
+    args:
+      warn: no
+    changed_when: false
+    register: test_registered_repos
+
+  - name: Check epel is enabled
+    assert:
+      msg: EPEL is not enabled
+      that:
+        - "'epel' in test_registered_repos.stdout"
+
+  become: True
