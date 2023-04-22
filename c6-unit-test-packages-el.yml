@@ -1,0 +1,14 @@
+---
+- hosts: "ketchup_nginx"
+  gather_facts: True
+  vars:
+    packages_el_nginx_packages: True
+  tasks:
+    - name: Exec packages_el role
+      include_role:
+        name: packages_el
+        tasks_from: main
+    - name: Unit Test for packages_el role
+      include_role:
+        name: packages_el
+        tasks_from: unit_test

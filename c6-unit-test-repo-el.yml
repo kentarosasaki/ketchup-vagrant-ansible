@@ -1,0 +1,13 @@
+---
+- hosts: "ketchup"
+  gather_facts: True
+  tasks:
+    - name: Exec repos_el role
+      include_role:
+        name: repos_el
+        tasks_from: main
+
+    - name: Unit Test for repos_el role
+      include_role:
+        name: repos_el
+        tasks_from: unit_test

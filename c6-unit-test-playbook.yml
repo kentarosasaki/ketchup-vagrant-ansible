@@ -1,0 +1,18 @@
+---
+- hosts: "ketchup_nginx"
+  gather_facts: True
+  vars:
+    packages_el_nginx_packages: True
+  tasks:
+    - include_role: name=repos_el tasks_from=main
+    - include_role: name=packages_el tasks_from=main
+    - include_role: name=nginx tasks_from=main
+
+- hosts: "ketchup_nginx"
+  gather_facts: True
+  vars:
+    packages_el_nginx_packages: True
+  tasks:
+    - include_role: name=repos_el tasks_from=unit_test
+    - include_role: name=packages_el tasks_from=unit_test
+    - include_role: name=nginx tasks_from=unit_test
