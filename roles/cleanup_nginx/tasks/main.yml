@@ -22,7 +22,7 @@
       name: "{{ nginx_init_name }}"
       enabled: no
       state: stopped
-    when: systemd_result | succeeded
+    when: systemd_result is succeeded
 
   - name: Delete nginx.conf
     file:
