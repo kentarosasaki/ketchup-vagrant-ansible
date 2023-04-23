@@ -22,5 +22,5 @@
       name: '{{ item }}'
       state: installed
     with_items: '{{ yum_nginx_packages }}'
-    when: 'packages_el_nginx_packages == True'
-  become: True
+    when: packages_el_nginx_packages
+  become: true

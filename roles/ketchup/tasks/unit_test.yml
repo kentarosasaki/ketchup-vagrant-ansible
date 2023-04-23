@@ -42,6 +42,7 @@
     template:
       src: 'config.json.j2'
       dest: '{{ ketchup_home }}/config.json'
+      mode: '0644'
     check_mode: true
     diff: true
     register: test_ketchup_conf
@@ -56,6 +57,7 @@
     template:
       src: 'ketchup.service.j2'
       dest: '{{ ketchup_bootstrap_path }}'
+      mode: '0644'
     check_mode: true
     diff: true
     register: test_bootstrap_conf
@@ -87,4 +89,4 @@
       port: "{{ ketchup_port }}"
       msg: "ketchup is not active."
 
-  become: True
+  become: true

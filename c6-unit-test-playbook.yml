@@ -1,9 +1,9 @@
 ---
 - name: Construct ketchup_nginx
   hosts: "ketchup_nginx"
-  gather_facts: True
+  gather_facts: true
   vars:
-    packages_el_nginx_packages: True
+    packages_el_nginx_packages: true
   tasks:
     - name: Enable epel repository
       include_role: name=repos_el tasks_from=main
@@ -14,9 +14,9 @@
 
 - name: Test ketchup_nginx
   hosts: "ketchup_nginx"
-  gather_facts: True
+  gather_facts: true
   vars:
-    packages_el_nginx_packages: True
+    packages_el_nginx_packages: true
   tasks:
     - name: Unit Test - Enable epel repository
       include_role: name=repos_el tasks_from=unit_test

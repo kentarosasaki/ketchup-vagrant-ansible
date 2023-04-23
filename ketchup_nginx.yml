@@ -1,11 +1,11 @@
 ---
 - name: Install Nginx frontend for Ketchup
   hosts: "ketchup_nginx"
-  gather_facts: True
+  gather_facts: true
   roles:
     - role: repos_el
 
     - role: packages_el
-      packages_el_nginx_packages: True
+      packages_el_nginx_packages: true
 
     - role: nginx

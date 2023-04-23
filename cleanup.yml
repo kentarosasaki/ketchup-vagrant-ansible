@@ -1,7 +1,7 @@
 ---
 - name: Cleanup Ketchup host
   hosts: "ketchup"
-  gather_facts: True
+  gather_facts: true
 
   roles:
     - role: cleanup_ketchup

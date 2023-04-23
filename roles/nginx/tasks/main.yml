@@ -21,21 +21,25 @@
     seboolean:
       name: '{{item}}'
       persistent: yes
-      state: True
+      state: true
     with_items:
       - httpd_can_network_connect
-    when: 'result|success and result.stdout.lower() != "disabled"'
+    when:
+      - result is success
+      - result.stdout.lower() != "disabled"
 
   - name: Install nginx.conf for Nginx
     copy:
       src: nginx.conf
       dest: /etc/nginx/nginx.conf
+      mode: '0644'
       backup: yes
 
   - name: Install ketchup.conf for Nginx
     template:
       src: 'ketchup.conf.j2'
       dest: '{{ nginx_conf_dir }}/ketchup.conf'
+      mode: '0644'
     notify:
       - restart nginx
 

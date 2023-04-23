@@ -22,17 +22,17 @@
       repo: '{{ ketchup_repos }}'
       dest: '{{ ketchup_home }}/app-contents'
       version: master
-    ignore_errors: True
 
   - name: Extract ketchup app
-    command: tar zxf '{{ ketchup_app_path }}'
-    args:
-      chdir: '{{ ketchup_home }}'
+    ansible.builtin.unarchive:
+      src: '{{ ketchup_app_path }}'
+      dest: '{{ ketchup_home }}'
 
   - name: Install ketchup configuration file
     template:
       src: 'config.json.j2'
       dest: '{{ ketchup_home }}/config.json'
+      mode: '0644'
     notify:
       - restart ketchup
 
@@ -40,7 +40,8 @@
     template:
       src: 'ketchup.service.j2'
       dest: '{{ ketchup_bootstrap_path }}'
+      mode: '0644'
     notify:
       - restart ketchup
 
-  become: True
+  become: true

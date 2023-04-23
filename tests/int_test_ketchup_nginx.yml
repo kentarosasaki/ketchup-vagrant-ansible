@@ -1,7 +1,7 @@
 ---
 - name: Integration test for ketchup app system
   hosts: localhost
-  gather_facts: False
+  gather_facts: false
   connection: local
   tasks:
     - name: Confirm redirect without the last slash

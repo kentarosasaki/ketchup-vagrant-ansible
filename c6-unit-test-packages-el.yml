@@ -1,8 +1,8 @@
 ---
 - hosts: "ketchup_nginx"
-  gather_facts: True
+  gather_facts: true
   vars:
-    packages_el_nginx_packages: True
+    packages_el_nginx_packages: true
   tasks:
     - name: Exec packages_el role
       include_role:

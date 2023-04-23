@@ -1,12 +1,12 @@
 ---
 - name: Install Ketchup
   hosts: "ketchup"
-  gather_facts: True
+  gather_facts: true
 
   roles:
     - role: repos_el
 
     - role: packages_el
-      packages_el_nginx_packages: False
+      packages_el_nginx_packages: false
 
     - role: ketchup

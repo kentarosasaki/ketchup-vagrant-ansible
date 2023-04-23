@@ -40,6 +40,6 @@
             - "test_installed_nginx_packages.changed|bool == 0"
           msg: "Uninstalled following packages. {{ test_installed_nginx_packages.results.0.changes|default('') }}"
 
-    when: 'packages_el_nginx_packages == True'
+    when: packages_el_nginx_packages
 
-  become: True
+  become: true

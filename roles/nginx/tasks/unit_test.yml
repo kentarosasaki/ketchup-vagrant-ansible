@@ -33,6 +33,7 @@
     copy:
       src: nginx.conf
       dest: /etc/nginx/nginx.conf
+      mode: '0644'
     check_mode: true
     diff: true
     register: test_nginx_conf
@@ -53,6 +54,7 @@
     template:
       src: 'ketchup.conf.j2'
       dest: '{{ nginx_conf_dir }}/ketchup.conf'
+      mode: '0644'
     check_mode: true
     diff: true
     register: test_nginx_ketchup_conf

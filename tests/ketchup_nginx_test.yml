@@ -1,7 +1,7 @@
 ---
 - name: Test Ketchup roles
   hosts: ketchup_nginx
-  become: True
+  become: true
 
   pre_tasks:
     - name: Remove the .dockerenv file so GitLab Omnibus doesn't get confused.
@@ -20,7 +20,7 @@
         name: packages_el
         tasks_from: unit_test
       vars:
-        packages_el_nginx_packages: True
+        packages_el_nginx_packages: true
 
     - name: Unit Test for nginx role
       include_role:
