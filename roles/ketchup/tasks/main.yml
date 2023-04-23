@@ -24,9 +24,10 @@
       version: master
 
   - name: Extract ketchup app
-    ansible.builtin.unarchive:
+    unarchive:
       src: '{{ ketchup_app_path }}'
       dest: '{{ ketchup_home }}'
+      remote_src: true
 
   - name: Install ketchup configuration file
     template:
