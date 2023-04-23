@@ -10,7 +10,7 @@ variables:
   CONTAINER_IMAGE: c7-systemd
   CONTAINER_IMAGE_PATH: ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CONTAINER_IMAGE}
 
-Lint_Check_Master:
+Lint_Check_Main:
   stage: lint
   image:
     name: irixjp/lint-rules:latest
@@ -19,7 +19,7 @@ Lint_Check_Master:
     - git clone https://github.com/infra-ci-book/lint-rules.git
     - lint-rules/lint_master.sh
   only:
-    - master
+    - main
   tags:
     - docker
 
@@ -34,7 +34,7 @@ Lint_Check_Branches:
   only:
     - branches
   except:
-    - master
+    - main
   tags:
     - docker
 
@@ -58,7 +58,7 @@ Ketchup_Unit_Test:
   script:
     - export CONTAINER_NAME=$(docker container ls --all --quiet --filter "name=systemd-0$")
     - docker exec ${CONTAINER_NAME} /bin/bash -c "ansible-playbook -i ./tests/inventory -l ${TARGET_APP} ./${TARGET_APP}.yml"
-    - docker exec ${CONTAINER_NAME} /bin/bash -c "cd ./tests; ansible-playbook -i ./inventory ./${TARGET_APP}_test.yml -vv"
+    - docker exec ${CONTAINER_NAME} /bin/bash -c "export ANSIBLE_CONFIG=$(pwd)/tests; ansible-playbook -i ./tests/inventory ./tests/${TARGET_APP}_test.yml -vv"
   tags:
     - docker
 
@@ -73,7 +73,7 @@ Ketchup_Nginx_Unit_Test:
   script:
     - export CONTAINER_NAME=$(docker container ls --all --quiet --filter "name=systemd-0$")
     - docker exec ${CONTAINER_NAME} /bin/bash -c "ansible-playbook -i ./tests/inventory -l ${TARGET_APP} ./${TARGET_APP}.yml"
-    - docker exec ${CONTAINER_NAME} /bin/bash -c "cd ./tests; ansible-playbook -i ./inventory ./${TARGET_APP}_test.yml -vv"
+    - docker exec ${CONTAINER_NAME} /bin/bash -c "export ANSIBLE_CONFIG=$(pwd)/tests; ansible-playbook -i ./tests/inventory ./tests/${TARGET_APP}_test.yml -vv"
   tags:
     - docker
 
@@ -110,7 +110,7 @@ Ketchup_Nginx_Int_Test:
     - echo "${VAGRANT_PRIVATE_KEY[@]:?}" > ${VAGRANT_KEY_PATH}/$KETCHUP_NGINX_APP/virtualbox/private_key
     - chmod 400 ${VAGRANT_KEY_PATH}/{$KETCHUP_APP,$KETCHUP_NGINX_APP}/virtualbox/private_key
   script:
-    - "cd ./tests; ansible-playbook -i ../hosts/ketchup/test_inventory ./int_test_ketchup_nginx.yml -vv"
+    - "export ANSIBLE_CONFIG=$(pwd)/tests; ansible-playbook -i ./hosts/ketchup/test_inventory ./tests/int_test_ketchup_nginx.yml -vv"
   after_script:
     - ansible-playbook -i ./hosts/ketchup/test_inventory ./cleanup.yml -vv
   tags:
